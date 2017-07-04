@@ -8,33 +8,34 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class ChangeSquare extends DifferentialPilot {
 	
-	public static RegulatedMotor motorG;
-	public static RegulatedMotor motorD;
+	public static NXTRegulatedMotor motorG = Motor.C;
+	public static NXTRegulatedMotor motorD = Motor.B;
 	
-	public static double wheelDiameter;
-	public static double trackWidth;
-	
-	public ChangeSquare(final double wheelDiameter, final double trackWidth, final RegulatedMotor leftMotor, final RegulatedMotor rightMotor) {		
-		super(wheelDiameter, trackWidth, leftMotor, rightMotor);	
-		this.wheelDiameter = wheelDiameter;
-		this.trackWidth = trackWidth;
-		this.motorG = leftMotor;
-		this.motorD = rightMotor;
-	}
+	public static double wheelDiameter = 55.5;
+	public static double trackWidth = 10;
 	
 	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 	
-	public static void goFrontSquare(){
+	public ChangeSquare(final double wheelDiameter, final double trackWidth, final NXTRegulatedMotor leftMotor, final NXTRegulatedMotor rightMotor) {		
+		super(wheelDiameter, trackWidth, leftMotor, rightMotor);	
+		ChangeSquare.wheelDiameter = wheelDiameter;
+		ChangeSquare.trackWidth = trackWidth;
+		ChangeSquare.motorG = leftMotor;
+		ChangeSquare.motorD = rightMotor;
+		ChangeSquare.pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
+	}
+	
+	public void goFrontSquare(){
 		pilote.travel(100);
 	}
-	public static void goBackSquare(){
+	public void goBackSquare(){
 		pilote.travel(-100);
 	}
-	public static void goLeftSquare(){
+	public void goLeftSquare(){
 		pilote.rotate(-90);
 		pilote.travel(100);
 	}
-	public static void goRightSquare(){
+	public void goRightSquare(){
 		pilote.rotate(90);
 		pilote.travel(100);
 	}
