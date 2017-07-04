@@ -8,13 +8,21 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class ChangeSquare extends DifferentialPilot {
 	
-	static NXTRegulatedMotor motorG = Motor.C;
-	static NXTRegulatedMotor motorD = Motor.B;
-
+	public static RegulatedMotor motorG;
+	public static RegulatedMotor motorD;
+	
+	public static double wheelDiameter;
+	public static double trackWidth;
+	
 	public ChangeSquare(final double wheelDiameter, final double trackWidth, final RegulatedMotor leftMotor, final RegulatedMotor rightMotor) {		
 		super(wheelDiameter, trackWidth, leftMotor, rightMotor);	
-		final DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
+		this.wheelDiameter = wheelDiameter;
+		this.trackWidth = trackWidth;
+		this.motorG = leftMotor;
+		this.motorD = rightMotor;
 	}
+	
+	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 	
 	public static void goFrontSquare(){
 		pilote.travel(100);
