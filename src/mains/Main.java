@@ -26,9 +26,13 @@ public class Main {
 
 		for(int i=1;i<4*11-1;i++){
 		
-			pilote.travel(200);
+			//pilote.travel(200);
 			
-			pilote.rotate(90);
+			//pilote.rotate(90);
+			
+			pilote.forward();
+			Delay.msDelay(200);
+			pilote.stop();
 			
 			/*Motor.B.setSpeed(600);
 			Motor.C.setSpeed(600);
