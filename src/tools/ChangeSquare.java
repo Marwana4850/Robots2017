@@ -73,6 +73,7 @@ public class ChangeSquare extends DifferentialPilot {
 					b = 400 - a;
 				}
 				angle = Math.atan((b-200)/distanceDeRecalage);
+				this.tete.rotateTo(0);
 				pilote.rotate(angle);
 				parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 				pilote.travel(parcours);	
@@ -82,6 +83,7 @@ public class ChangeSquare extends DifferentialPilot {
 		else{
 			
 			angle = Math.atan((b-200)/distanceDeRecalage);
+			this.tete.rotateTo(0);
 			pilote.rotate(angle);
 			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 			pilote.travel(parcours);	
