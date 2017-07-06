@@ -38,12 +38,18 @@ public class MainSquares {
 		pilote.recalage();
 		LCD.drawString("avance", 3 , 6);
 		Delay.msDelay(1000);
+		
+		pilote.rotate(-90);
+		
 		pilote.avanceUneCase();
 		LCD.drawString("RECALAGE", 3 , 6);
 		Delay.msDelay(1000);
 		pilote.recalage();
 		LCD.drawString("avance", 3 , 6);
 		Delay.msDelay(1000);
+		
+		pilote.rotate(90);
+		
 		pilote.avanceUneCase();
 		LCD.clear();
 		}

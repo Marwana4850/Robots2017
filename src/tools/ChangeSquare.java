@@ -84,14 +84,14 @@ public class ChangeSquare extends DifferentialPilot {
 					LCD.drawString(b.toString(), 1, 4);
 					a = 400 - b;
 					LCD.drawString(a.toString(), 1, 5);
-					signe = 1;
+					signe = -1;
 				}
 				if(dist<20){
 					a = dist*10;
 					b = 400 - a;
 					LCD.drawString(b.toString(), 1, 4);
 					LCD.drawString(a.toString(), 1, 5);
-					signe = -1;
+					signe = 1;
 				}
 				angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI; //positif = sens non trigo...
 				LCD.drawString(angle.toString(), 1, 2);
@@ -115,7 +115,7 @@ public class ChangeSquare extends DifferentialPilot {
 				LCD.drawString(b.toString(), 1, 4);
 				a = 400 - b;
 				LCD.drawString(a.toString(), 1, 5);
-				signe = -1;
+				signe = 1;
 			}
 			if(dist<20){
 				a = dist*10;
@@ -123,7 +123,7 @@ public class ChangeSquare extends DifferentialPilot {
 				b = 400 - a;
 				LCD.drawString(b.toString(), 1, 4);
 				LCD.drawString(a.toString(), 1, 5);
-				signe = 1;
+				signe = -1;
 			}			
 			angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI;
 			LCD.drawString(angle.toString(), 1, 2);
@@ -194,7 +194,7 @@ public class ChangeSquare extends DifferentialPilot {
 		long delai = stop - start;
 		pilote.stop();
 		if (delai > 15) {
-			second.rotate(-(int) (delai/2.2));
+			second.rotate((int) (delai/2.2));
 		}
 		Delay.msDelay(1000);
 		pilote.travel(240);
