@@ -1,11 +1,15 @@
 package tools;
 
+import lejos.nxt.Button;
+import lejos.nxt.LCD;
+import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
+import lejos.util.Delay;
 
 
 public class ChangeSquare extends DifferentialPilot {
@@ -49,47 +53,95 @@ public class ChangeSquare extends DifferentialPilot {
 		//cette fonction doit être appelée quand la case où on veut aller est celle en face du robot
 		//si ce n'est pas le cas il faut faire une rotation
 	
-		this.tete.rotateTo(-90);
+		this.tete.rotateTo(-90); //regarde à gauche
 		
-		int dist = this.ultrasonic.getDistance();
-		int distanceDeRecalage = 150;
-		int a = 0;
-		int b = 0;
-		double angle = 0;
-		double parcours = 0;
+		Delay.msDelay(400);
+		Double dist = (double) this.ultrasonic.getDistance(); //attention c'est en cm !
+		LCD.drawString(dist.toString(), 1, 1);
+		//Button.waitForAnyPress();
+		LCD.clear();
 		
-		if(dist>400){
-			this.tete.rotateTo(90);
-			dist = this.ultrasonic.getDistance();
+		Double distanceDeRecalage = (double) 150;
+		Double a = (double) 0;
+		Double b = (double) 0;
+		Double angle = (double) 0;
+		Double parcours = (double) 0;
+		Integer signe = 1;
+		
+		if(dist == 255 || dist >= 40){
+			this.tete.rotateTo(90);//regarde à droite
+			Delay.msDelay(400);
+			dist = (double) this.ultrasonic.getDistance();
+			LCD.drawString(dist.toString(), 1, 1);
+			//Button.waitForAnyPress();
+			LCD.clear();
+			
 			this.tete.rotateTo(0);
 			
-			if(dist<400){
-				if(dist>=200){
-					b = dist;
+			if(dist<40){
+				if(dist>=20){
+					b = dist*10;
+					LCD.drawString(b.toString(), 1, 4);
 					a = 400 - b;
+					LCD.drawString(a.toString(), 1, 5);
+					signe = 1;
 				}
-				if(dist<200){
-					a = dist;
+				if(dist<20){
+					a = dist*10;
 					b = 400 - a;
+					LCD.drawString(b.toString(), 1, 4);
+					LCD.drawString(a.toString(), 1, 5);
+					signe = -1;
 				}
-				angle = Math.atan((b-200)/distanceDeRecalage);
+				angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI; //positif = sens non trigo...
+				LCD.drawString(angle.toString(), 1, 2);
 				this.tete.rotateTo(0);
+				
+				if(angle>=5 || angle<=-5){
 				pilote.rotate(angle);
+				Delay.msDelay(500);
 				parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
-				pilote.travel(parcours);	
-				pilote.rotate(-angle); //pour se remettre à peu près droit
+				LCD.drawString(parcours.toString(), 1, 3);
+				pilote.travel(parcours);
+				Delay.msDelay(500);
+				pilote.rotate((-1)*angle); //pour se remettre à peu près droit
+				}
 			}
 		}
 		else{
-			
-			angle = Math.atan((b-200)/distanceDeRecalage);
+			if(dist>=20){
+				b = dist*10;
+				LCD.drawString(b.toString(), 1, 4);
+				a = 400 - b;
+				LCD.drawString(a.toString(), 1, 5);
+				signe = -1;
+			}
+			if(dist<20){
+				a = dist*10;
+				
+				b = 400 - a;
+				LCD.drawString(b.toString(), 1, 4);
+				LCD.drawString(a.toString(), 1, 5);
+				signe = 1;
+			}			
+			angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI;
+			LCD.drawString(angle.toString(), 1, 2);
 			this.tete.rotateTo(0);
-			pilote.rotate(angle);
-			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
-			pilote.travel(parcours);	
-			pilote.rotate(-angle); //pour se remettre à peu près droit
 			
-		} //après cette fonction de recalage, on arrive un peu avant ligne blanche, 
+			if(angle>=5 || angle<=-5){
+			pilote.rotate(angle);
+			Delay.msDelay(500);
+			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
+			LCD.drawString(parcours.toString(), 1, 3);
+			pilote.travel(parcours);
+			Delay.msDelay(500);
+			pilote.rotate((-1)*angle); //pour se remettre à peu près droit
+			}
+			
+		}
+		//Button.waitForAnyPress();
+		LCD.clear();
+		//après cette fonction de recalage, on arrive un peu avant ligne blanche, 
 		//il faut alors se remettre droit grâce à celle-ci
 		// -> en fait il suffit d'appeler la fonction avanceUneCase()
 		
@@ -106,6 +158,44 @@ public class ChangeSquare extends DifferentialPilot {
 		->travel(hyp)
 		*/
 	
+	}
+	
+	
+	// Valeur seuil pour différencier le noir et le blanc
+		private static final int valeurSeuilGauche = 487;
+		private static final int valeurSeuilDroit = 487;
+	
+	// Capteurs lumineux
+		private LightSensor lightG = new LightSensor(SensorPort.S4);
+		private LightSensor lightD = new LightSensor(SensorPort.S3);
+	
+	public void avanceUneCase() {
+		NXTRegulatedMotor second = null;
+		long start = 0;
+		long stop = 0;
+		pilote.forward();
+		while (lightG.getNormalizedLightValue() < valeurSeuilGauche
+				&& lightD.getNormalizedLightValue() < valeurSeuilDroit)
+			;
+		start = System.currentTimeMillis();
+		if (lightG.getNormalizedLightValue() > valeurSeuilGauche) {
+			while (lightD.getNormalizedLightValue() < valeurSeuilDroit)
+				;
+			stop = System.currentTimeMillis();
+			second = motorD;
+		} else {
+			while (lightG.getNormalizedLightValue() < valeurSeuilGauche)
+				;
+			stop = System.currentTimeMillis();
+			second = motorG;
+		}
+		long delai = stop - start;
+		pilote.stop();
+		if (delai > 15) {
+			second.rotate((int) (delai / 1.3));
+		}
+		Delay.msDelay(1000);
+		pilote.travel(240);
 	}
 	
 }
