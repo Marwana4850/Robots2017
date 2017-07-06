@@ -4,6 +4,7 @@ import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
+import lejos.util.Delay;
 import tools.ChangeSquare;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -31,8 +32,20 @@ public class MainSquares {
 		Motor.B.setAcceleration(1500);
 		Motor.C.setAcceleration(1500);
 		
+		//pilote.travel(200);
+		LCD.drawString("RECALAGE", 3 , 6);
+		Delay.msDelay(1000);
 		pilote.recalage();
-		//pilote.avanceUneCase();
+		LCD.drawString("avance", 3 , 6);
+		Delay.msDelay(1000);
+		pilote.avanceUneCase();
+		LCD.drawString("RECALAGE", 3 , 6);
+		Delay.msDelay(1000);
+		pilote.recalage();
+		LCD.drawString("avance", 3 , 6);
+		Delay.msDelay(1000);
+		pilote.avanceUneCase();
+		LCD.clear();
 		}
 		/*UltrasonicSensor ultrasonic = new UltrasonicSensor(SensorPort.S1);
 		Integer distance = ultrasonic.getDistance();

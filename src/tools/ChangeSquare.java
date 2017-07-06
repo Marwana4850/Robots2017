@@ -61,7 +61,7 @@ public class ChangeSquare extends DifferentialPilot {
 		//Button.waitForAnyPress();
 		LCD.clear();
 		
-		Double distanceDeRecalage = (double) 150;
+		Double distanceDeRecalage = (double) 120;
 		Double a = (double) 0;
 		Double b = (double) 0;
 		Double angle = (double) 0;
@@ -95,6 +95,7 @@ public class ChangeSquare extends DifferentialPilot {
 				}
 				angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI; //positif = sens non trigo...
 				LCD.drawString(angle.toString(), 1, 2);
+				Delay.msDelay(1000);
 				this.tete.rotateTo(0);
 				
 				if(angle>=5 || angle<=-5){
@@ -126,6 +127,7 @@ public class ChangeSquare extends DifferentialPilot {
 			}			
 			angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI;
 			LCD.drawString(angle.toString(), 1, 2);
+			Delay.msDelay(1000);
 			this.tete.rotateTo(0);
 			
 			if(angle>=5 || angle<=-5){
@@ -192,10 +194,10 @@ public class ChangeSquare extends DifferentialPilot {
 		long delai = stop - start;
 		pilote.stop();
 		if (delai > 15) {
-			second.rotate((int) (delai / 1.3));
+			second.rotate(-(int) (delai/2.2));
 		}
 		Delay.msDelay(1000);
 		pilote.travel(240);
-	}
+		}
 	
 }
