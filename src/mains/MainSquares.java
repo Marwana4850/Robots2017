@@ -13,14 +13,16 @@ public class MainSquares {
 		ChangeSquare pilote = new ChangeSquare(55.5, 162.5, motorG, motorD);
 		
 		Button.waitForAnyPress();
-		pilote.goFrontSquare();
+		/*pilote.goFrontSquare();
 		pilote.goBackSquare();
 		pilote.goLeftSquare();
 		pilote.goBackSquare();
 		pilote.rotate(90);
 		pilote.goRightSquare();
 		pilote.goBackSquare();
-		pilote.rotate(-90);
+		pilote.rotate(-90);*/
+		
+		pilote.recalage();
 	}
 
 }

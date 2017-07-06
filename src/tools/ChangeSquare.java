@@ -49,41 +49,41 @@ public class ChangeSquare extends DifferentialPilot {
 		//cette fonction doit être appelée quand la case où on veut aller est celle en face du robot
 		//si ce n'est pas le cas il faut faire une rotation
 	
-		this.tete.rotateTo(-180);
+		this.tete.rotateTo(-90);
 		
 		int dist = this.ultrasonic.getDistance();
-		int distanceDeRecalage = 15;
+		int distanceDeRecalage = 150;
 		int a = 0;
 		int b = 0;
 		double angle = 0;
 		double parcours = 0;
 		
-		if(dist>40){
-			this.tete.rotateTo(180);
+		if(dist>400){
+			this.tete.rotateTo(90);
 			dist = this.ultrasonic.getDistance();
 			this.tete.rotateTo(0);
 			
-			if(dist<40){
-				if(dist>=20){
+			if(dist<400){
+				if(dist>=200){
 					b = dist;
-					a = 40 - b;
+					a = 400 - b;
 				}
-				if(dist<20){
+				if(dist<200){
 					a = dist;
-					b = 40 - a;
+					b = 400 - a;
 				}
-				angle = Math.atan((b-20)/distanceDeRecalage);
+				angle = Math.atan((b-200)/distanceDeRecalage);
 				pilote.rotate(angle);
-				parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-20)*(b-20));
+				parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 				pilote.travel(parcours);	
 				pilote.rotate(-angle); //pour se remettre à peu près droit
 			}
 		}
 		else{
 			
-			angle = Math.atan((b-20)/distanceDeRecalage);
+			angle = Math.atan((b-200)/distanceDeRecalage);
 			pilote.rotate(angle);
-			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-20)*(b-20));
+			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 			pilote.travel(parcours);	
 			pilote.rotate(-angle); //pour se remettre à peu près droit
 			
