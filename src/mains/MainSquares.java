@@ -6,6 +6,9 @@ import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Delay;
 import tools.ChangeSquare;
+
+import java.util.ArrayList;
+
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
@@ -65,39 +68,9 @@ public class MainSquares {
 		pilote.avanceUneCase();
 		Delay.msDelay(1000);*/
 		
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(90); //vers la gauche
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(-90);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(-90);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(-90);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(90);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(-90);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.rotate(180);
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.recalage();
-		pilote.avanceUneCase();
-		pilote.recalage();
-		pilote.avanceUneCase();
+		String[] parcours = {"f","l","r","f","f","r"};
+		pilote.parcours(parcours);
+		
 		LCD.clear();
 		}
 		/*UltrasonicSensor ultrasonic = new UltrasonicSensor(SensorPort.S1);

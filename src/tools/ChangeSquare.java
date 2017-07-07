@@ -34,12 +34,20 @@ public class ChangeSquare extends DifferentialPilot {
 	
 	public void goFrontSquare(){
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(500);
+		Motor.C.setAcceleration(500);
 		//pilote.travel(400);
 		pilote.recalage();
 		pilote.avanceUneCase();
 	}
 	public void goBackSquare(){
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(500);
+		Motor.C.setAcceleration(500);
 		//pilote.travel(-400);
 		pilote.rotate(180);
 		pilote.recalage();
@@ -47,6 +55,10 @@ public class ChangeSquare extends DifferentialPilot {
 	}
 	public void goLeftSquare(){
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(500);
+		Motor.C.setAcceleration(500);
 		pilote.rotate(90);
 		pilote.recalage();
 		pilote.avanceUneCase();
@@ -54,10 +66,31 @@ public class ChangeSquare extends DifferentialPilot {
 	}
 	public void goRightSquare(){
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(500);
+		Motor.C.setAcceleration(500);
 		pilote.rotate(-90);
 		pilote.recalage();
 		pilote.avanceUneCase();
 		//pilote.travel(400);
+	}
+	public void parcours(String[] parcours){
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		for(String x : parcours){
+			if(x.equals("r")){//pour aller à droite
+				pilote.goRightSquare();
+			}
+			if(x.equals("l")){//pour aller à gauche
+				pilote.goLeftSquare();
+			}
+			if(x.equals("f")){//pour aller tout droit
+				pilote.goFrontSquare();
+			}
+			if(x.equals("b")){//pour faire demi-tour
+				pilote.goBackSquare();
+			}
+		}
 	}
 	
 	private UltrasonicSensor ultrasonic = new UltrasonicSensor(SensorPort.S1);
@@ -114,8 +147,8 @@ public class ChangeSquare extends DifferentialPilot {
 				
 				//if(angle>=20 || angle<=-20){
 				
-				motorG.setSpeed(100);
-				motorD.setSpeed(100);
+				motorG.setSpeed(200);
+				motorD.setSpeed(200);
 				Motor.B.setAcceleration(500);
 				Motor.C.setAcceleration(500);
 				
