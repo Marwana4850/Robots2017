@@ -33,18 +33,18 @@ public class ChangeSquare extends DifferentialPilot {
 	}
 	
 	public void goFrontSquare(){
-		pilote.travel(400);
+		//pilote.travel(400);
 	}
 	public void goBackSquare(){
-		pilote.travel(-400);
+		//pilote.travel(-400);
 	}
 	public void goLeftSquare(){
-		pilote.rotate(-90);
-		pilote.travel(400);
+		//pilote.rotate(-90);
+		//pilote.travel(400);
 	}
 	public void goRightSquare(){
-		pilote.rotate(90);
-		pilote.travel(400);
+		//pilote.rotate(90);
+		//pilote.travel(400);
 	}
 	
 	private UltrasonicSensor ultrasonic = new UltrasonicSensor(SensorPort.S1);
@@ -55,13 +55,13 @@ public class ChangeSquare extends DifferentialPilot {
 	
 		this.tete.rotateTo(-90); //regarde à gauche
 		
-		Delay.msDelay(400);
+		//Delay.msDelay(400);
 		Double dist = (double) this.ultrasonic.getDistance(); //attention c'est en cm !
 		LCD.drawString(dist.toString(), 1, 1);
 		//Button.waitForAnyPress();
 		LCD.clear();
 		
-		Double distanceDeRecalage = (double) 120;
+		Double distanceDeRecalage = (double) 100;
 		Double a = (double) 0;
 		Double b = (double) 0;
 		Double angle = (double) 0;
@@ -70,7 +70,7 @@ public class ChangeSquare extends DifferentialPilot {
 		
 		if(dist == 255 || dist >= 40){
 			this.tete.rotateTo(90);//regarde à droite
-			Delay.msDelay(400);
+			//Delay.msDelay(400);
 			dist = (double) this.ultrasonic.getDistance();
 			LCD.drawString(dist.toString(), 1, 1);
 			//Button.waitForAnyPress();
@@ -93,20 +93,29 @@ public class ChangeSquare extends DifferentialPilot {
 					LCD.drawString(a.toString(), 1, 5);
 					signe = 1;
 				}
-				angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI; //positif = sens non trigo...
+				if(a <= 150){
+				angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI; 
 				LCD.drawString(angle.toString(), 1, 2);
-				Delay.msDelay(1000);
+				//Delay.msDelay(1000);
 				this.tete.rotateTo(0);
 				
-				if(angle>=5 || angle<=-5){
+				//if(angle>=20 || angle<=-20){
+				
+				motorG.setSpeed(100);
+				motorD.setSpeed(100);
+				Motor.B.setAcceleration(500);
+				Motor.C.setAcceleration(500);
+				
 				pilote.rotate(angle);
-				Delay.msDelay(500);
+				//Delay.msDelay(500);
 				parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 				LCD.drawString(parcours.toString(), 1, 3);
 				pilote.travel(parcours);
-				Delay.msDelay(500);
+				//Delay.msDelay(500);
 				pilote.rotate((-1)*angle); //pour se remettre à peu près droit
+				//}
 				}
+				this.tete.rotateTo(0);
 			}
 		}
 		else{
@@ -124,21 +133,30 @@ public class ChangeSquare extends DifferentialPilot {
 				LCD.drawString(b.toString(), 1, 4);
 				LCD.drawString(a.toString(), 1, 5);
 				signe = -1;
-			}			
+			}		
+			if(a <= 150){
 			angle = signe*Math.atan((b-200)/distanceDeRecalage)*180/Math.PI;
 			LCD.drawString(angle.toString(), 1, 2);
-			Delay.msDelay(1000);
+			//Delay.msDelay(1000);
 			this.tete.rotateTo(0);
 			
-			if(angle>=5 || angle<=-5){
+			//if(angle>=20 || angle<=-20){
+			
+			motorG.setSpeed(400);
+			motorD.setSpeed(400);
+			Motor.B.setAcceleration(700);
+			Motor.C.setAcceleration(700);
+			
 			pilote.rotate(angle);
-			Delay.msDelay(500);
+			//Delay.msDelay(500);
 			parcours = Math.sqrt(distanceDeRecalage*distanceDeRecalage + (b-200)*(b-200));
 			LCD.drawString(parcours.toString(), 1, 3);
 			pilote.travel(parcours);
-			Delay.msDelay(500);
+			//Delay.msDelay(500);
 			pilote.rotate((-1)*angle); //pour se remettre à peu près droit
+			//}
 			}
+			this.tete.rotateTo(0);
 			
 		}
 		//Button.waitForAnyPress();
@@ -172,6 +190,10 @@ public class ChangeSquare extends DifferentialPilot {
 		private LightSensor lightD = new LightSensor(SensorPort.S3);
 	
 	public void avanceUneCase() {
+		motorG.setSpeed(400);
+		motorD.setSpeed(400);
+		Motor.B.setAcceleration(2000);
+		Motor.C.setAcceleration(2000);
 		NXTRegulatedMotor second = null;
 		long start = 0;
 		long stop = 0;
@@ -193,11 +215,15 @@ public class ChangeSquare extends DifferentialPilot {
 		}
 		long delai = stop - start;
 		pilote.stop();
-		if (delai > 15) {
+		if (delai > /*15*/ 30) {
 			second.rotate((int) (delai/2.2));
 		}
-		Delay.msDelay(1000);
-		pilote.travel(240);
+		//Delay.msDelay(1000);
+		motorG.setSpeed(400);
+		motorD.setSpeed(400);
+		Motor.B.setAcceleration(1200);
+		Motor.C.setAcceleration(1200);
+		pilote.travel(200);
 		}
 	
 }

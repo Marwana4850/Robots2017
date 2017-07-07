@@ -2,9 +2,12 @@ package mains;
 
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
+import lejos.nxt.SensorPort;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
+import lejos.nxt.LightSensor;
 import tools.ChangeSquare;
 
 public class Main {
@@ -16,23 +19,33 @@ public class Main {
 		NXTRegulatedMotor motorG = Motor.C;
 		NXTRegulatedMotor motorD = Motor.B;
 	
-		DifferentialPilot pilote = new DifferentialPilot(55.5, 162.5, motorG, motorD);
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		
+		// Capteurs lumineux
+				LightSensor lightG = new LightSensor(SensorPort.S4);
+				LightSensor lightD = new LightSensor(SensorPort.S3);
 		
-		motorG.setSpeed(600);
-		motorD.setSpeed(600);
-		Motor.B.setAcceleration(2000);
-		Motor.C.setAcceleration(2000);
+		motorG.setSpeed(400);
+		motorD.setSpeed(400);
+		Motor.B.setAcceleration(1500);
+		Motor.C.setAcceleration(1500);
 
-		for(int i=1;i<4*11-1;i++){
-		
+		//for(int i=1;i<4*11-1;i++){
+		while(true){
 			//pilote.travel(200);
 			
 			//pilote.rotate(90);
 			
-			pilote.forward();
-			Delay.msDelay(200);
-			pilote.stop();
+			//pilote.forward();
+			//Integer a = lightG.getNormalizedLightValue();
+			//Integer b = lightD.getNormalizedLightValue();
+			//pilote.avanceUneCase();
+			//LCD.drawString(a.toString(), 1, 1);
+			//LCD.drawString(a.toString(), 1, 2);
+			//Delay.msDelay(1000);
+			//LCD.clear();
+			//pilote.stop();
+			pilote.recalage();
 			
 			/*Motor.B.setSpeed(600);
 			Motor.C.setSpeed(600);
