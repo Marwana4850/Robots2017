@@ -33,17 +33,30 @@ public class ChangeSquare extends DifferentialPilot {
 	}
 	
 	public void goFrontSquare(){
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		//pilote.travel(400);
+		pilote.recalage();
+		pilote.avanceUneCase();
 	}
 	public void goBackSquare(){
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		//pilote.travel(-400);
+		pilote.rotate(180);
+		pilote.recalage();
+		pilote.avanceUneCase();
 	}
 	public void goLeftSquare(){
-		//pilote.rotate(-90);
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		pilote.rotate(90);
+		pilote.recalage();
+		pilote.avanceUneCase();
 		//pilote.travel(400);
 	}
 	public void goRightSquare(){
-		//pilote.rotate(90);
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		pilote.rotate(-90);
+		pilote.recalage();
+		pilote.avanceUneCase();
 		//pilote.travel(400);
 	}
 	
