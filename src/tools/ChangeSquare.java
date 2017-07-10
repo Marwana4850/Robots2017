@@ -34,9 +34,9 @@ public class ChangeSquare extends DifferentialPilot {
 	
 	public void goFrontSquare(){
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
-		motorG.setSpeed(200);
-		motorD.setSpeed(200);
-		Motor.B.setAcceleration(500);
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
+		Motor.B.setAcceleration(1500);
 		Motor.C.setAcceleration(500);
 		//pilote.travel(400);
 		pilote.recalage();
@@ -147,8 +147,8 @@ public class ChangeSquare extends DifferentialPilot {
 				
 				//if(angle>=20 || angle<=-20){
 				
-				motorG.setSpeed(200);
-				motorD.setSpeed(200);
+				motorG.setSpeed(420);
+				motorD.setSpeed(420);
 				Motor.B.setAcceleration(500);
 				Motor.C.setAcceleration(500);
 				
@@ -188,8 +188,8 @@ public class ChangeSquare extends DifferentialPilot {
 			
 			//if(angle>=20 || angle<=-20){
 			
-			motorG.setSpeed(400);
-			motorD.setSpeed(400);
+			motorG.setSpeed(420);
+			motorD.setSpeed(420);
 			Motor.B.setAcceleration(700);
 			Motor.C.setAcceleration(700);
 			
@@ -236,14 +236,15 @@ public class ChangeSquare extends DifferentialPilot {
 		private LightSensor lightD = new LightSensor(SensorPort.S3);
 	
 	public void avanceUneCase() {
-		motorG.setSpeed(400);
-		motorD.setSpeed(400);
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
 		Motor.B.setAcceleration(2000);
 		Motor.C.setAcceleration(2000);
 		NXTRegulatedMotor second = null;
 		NXTRegulatedMotor prems = null;
 		long start = 0;
 		long stop = 0;
+		int têta = 0;
 		pilote.forward();
 		while (lightG.getNormalizedLightValue() < valeurSeuilGauche
 				&& lightD.getNormalizedLightValue() < valeurSeuilDroit)
@@ -265,11 +266,14 @@ public class ChangeSquare extends DifferentialPilot {
 		long delai = stop - start;
 		pilote.stop();
 		if (delai > /*15*/ 100) {
-			second.rotate((int) (delai/2.2));
+			//second.rotate((int) (delai/2.2));
+			têta = (int) Math.atan(0.2*delai/trackWidth);
+			prems.setSpeed(0);
+			second.rotate(têta);
 		}
 		//Delay.msDelay(1000);
-		motorG.setSpeed(400);
-		motorD.setSpeed(400);
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
 		Motor.B.setAcceleration(1200);
 		Motor.C.setAcceleration(1200);
 		pilote.travel(200);
