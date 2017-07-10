@@ -68,7 +68,8 @@ public class MainSquares {
 		pilote.avanceUneCase();
 		Delay.msDelay(1000);*/
 		
-		String[] parcours = {"f","l","r","f","f","r"};
+		//String[] parcours = {"f","l","r","f","f","r"};
+		String[] parcours = {"f","l","l","r","f","r","b","r","r","b","l","f","f","l","r","r","b"};
 		pilote.parcours(parcours);	
 		
 		LCD.clear();

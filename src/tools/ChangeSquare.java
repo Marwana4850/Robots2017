@@ -39,10 +39,20 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		motorG.setSpeed(420);
 		motorD.setSpeed(420);
-		Motor.B.setAcceleration(1500);
-		Motor.C.setAcceleration(500);
+		//Motor.B.setAcceleration(1500);
+		//Motor.C.setAcceleration(1500);
 		// pilote.travel(400);
+		pilote.avanceUneCase();
 		pilote.recalage();
+	}
+	
+	public void goFrontSquareBeforeTurn() {
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
+		//Motor.B.setAcceleration(1500);
+		//Motor.C.setAcceleration(1500);
+		// pilote.travel(400);
 		pilote.avanceUneCase();
 	}
 
@@ -50,11 +60,26 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		motorG.setSpeed(200);
 		motorD.setSpeed(200);
-		Motor.B.setAcceleration(500);
-		Motor.C.setAcceleration(500);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
 		// pilote.travel(-400);
 		pilote.rotate(180);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
+		pilote.avanceUneCase();
 		pilote.recalage();
+	}
+	
+	public void goBackSquareBeforeTurn() {
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
+		// pilote.travel(-400);
+		pilote.rotate(180);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
 		pilote.avanceUneCase();
 	}
 
@@ -62,10 +87,24 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		motorG.setSpeed(200);
 		motorD.setSpeed(200);
-		Motor.B.setAcceleration(500);
-		Motor.C.setAcceleration(500);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
 		pilote.rotate(90);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
+		pilote.avanceUneCase();
 		pilote.recalage();
+		// pilote.travel(400);
+	}
+	public void goLeftSquareBeforeTurn() {
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
+		pilote.rotate(90);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
 		pilote.avanceUneCase();
 		// pilote.travel(400);
 	}
@@ -74,28 +113,56 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		motorG.setSpeed(200);
 		motorD.setSpeed(200);
-		Motor.B.setAcceleration(500);
-		Motor.C.setAcceleration(500);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
 		pilote.rotate(-90);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
+		pilote.avanceUneCase();
 		pilote.recalage();
+		// pilote.travel(400);
+	}
+	public void goRightSquareBeforeTurn() {
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
+		pilote.rotate(-90);
+		Motor.B.setAcceleration(1600);
+		Motor.C.setAcceleration(1600);
 		pilote.avanceUneCase();
 		// pilote.travel(400);
 	}
 
 	public void parcours(String[] parcours) {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
-		for (String x : parcours) {
-			if (x.equals("r")) {// pour aller à droite
+		String x = "";
+		for (int i=0 ; i<parcours.length ; i++) {
+			x = parcours[i];
+			if (x.equals("r") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller à droite
 				pilote.goRightSquare();
 			}
-			if (x.equals("l")) {// pour aller à gauche
+			if (x.equals("l") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller à gauche
 				pilote.goLeftSquare();
 			}
-			if (x.equals("f")) {// pour aller tout droit
+			if (x.equals("r") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour à droite avant de tourner
+				pilote.goRightSquareBeforeTurn();
+			}
+			if (x.equals("l") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour aller à gauche avant de tourner
+				pilote.goLeftSquareBeforeTurn();
+			}
+			if (x.equals("f") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller tout droit
 				pilote.goFrontSquare();
 			}
-			if (x.equals("b")) {// pour faire demi-tour
+			if (x.equals("b") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour faire demi-tour
 				pilote.goBackSquare();
+			}
+			if (x.equals("f") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour aller tout droit avant de tourner
+				pilote.goFrontSquareBeforeTurn();
+			}
+			if (x.equals("b") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour faire demi-tour avant de tourner
+				pilote.goBackSquareBeforeTurn();
 			}
 		}
 	}
@@ -107,7 +174,12 @@ public class ChangeSquare extends DifferentialPilot {
 		// celle en face du robot
 		// si ce n'est pas le cas il faut faire une rotation
 
-		Double distanceDeRecalage = (double) 100;
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
+		//Motor.B.setAcceleration(1500);
+		//Motor.C.setAcceleration(1500);
+		
+		Double distanceDeRecalage = (double) 60;
 		Double a = (double) 0;
 		Double b = (double) 0;
 		Double angle = (double) 0;
@@ -131,14 +203,14 @@ public class ChangeSquare extends DifferentialPilot {
 					LCD.drawString(a.toString(), 1, 5);
 					signe = -1;
 				}
-				if (a <= 250) {
+				if (a <= 200) {
 					angle = signe * Math.atan((b - 200) / distanceDeRecalage) * 180 / Math.PI;
 					LCD.drawString(angle.toString(), 1, 2);
 
 					motorG.setSpeed(420);
 					motorD.setSpeed(420);
-					Motor.B.setAcceleration(1500);
-					Motor.C.setAcceleration(1500);
+					//Motor.B.setAcceleration(1500);
+					//Motor.C.setAcceleration(1500);
 
 					pilote.rotate(angle);
 					parcours = Math.sqrt(distanceDeRecalage * distanceDeRecalage + (b - 200) * (b - 200));
@@ -167,14 +239,14 @@ public class ChangeSquare extends DifferentialPilot {
 				LCD.drawString(a.toString(), 1, 5);
 				signe = +1;
 			}
-			if (a <= 250) {
+			if (a <= 200) {
 				angle = signe * Math.atan((b - 200) / distanceDeRecalage) * 180 / Math.PI;
 				LCD.drawString(angle.toString(), 1, 2);
 
 				motorG.setSpeed(420);
 				motorD.setSpeed(420);
-				Motor.B.setAcceleration(700);
-				Motor.C.setAcceleration(700);
+				//Motor.B.setAcceleration(700);
+				//Motor.C.setAcceleration(700);
 
 				pilote.rotate(angle);
 				parcours = Math.sqrt(distanceDeRecalage * distanceDeRecalage + (b - 200) * (b - 200));
@@ -183,6 +255,12 @@ public class ChangeSquare extends DifferentialPilot {
 				pilote.rotate((-1) * angle); // pour se remettre à peu près droit
 			}
 		}
+		
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
+		//Motor.B.setAcceleration(1500);
+		//Motor.C.setAcceleration(1500);
+		
 		// Button.waitForAnyPress();
 		LCD.clear();
 		// après cette fonction de recalage, on arrive un peu avant ligne
@@ -215,8 +293,8 @@ public class ChangeSquare extends DifferentialPilot {
 	public void avanceUneCase() {
 		motorG.setSpeed(420);
 		motorD.setSpeed(420);
-		Motor.B.setAcceleration(2000);
-		Motor.C.setAcceleration(2000);
+		//Motor.B.setAcceleration(2000);
+		//Motor.C.setAcceleration(2000);
 		NXTRegulatedMotor second = null;
 		NXTRegulatedMotor prems = null;
 		long start = 0;
@@ -256,10 +334,10 @@ public class ChangeSquare extends DifferentialPilot {
 		// Delay.msDelay(1000);
 		motorG.setSpeed(420);
 		motorD.setSpeed(420);
-		Motor.B.setAcceleration(1000);
-		Motor.C.setAcceleration(1000);
+		//Motor.B.setAcceleration(1500);
+		//Motor.C.setAcceleration(1500);
 		
-		pilote.travel(200, true);
+		pilote.travel(230, true);
 		
 		this.tete.rotateTo(-90); // regarde à gauche
 		côté = "g";
