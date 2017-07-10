@@ -19,7 +19,7 @@ public class ChangeSquare extends DifferentialPilot {
 	public static NXTRegulatedMotor tete = Motor.A;
 	
 	public static double wheelDiameter = 55.5;
-	public static double trackWidth = 10;
+	public static double trackWidth = 100;
 	
 	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 	
@@ -241,6 +241,7 @@ public class ChangeSquare extends DifferentialPilot {
 		Motor.B.setAcceleration(2000);
 		Motor.C.setAcceleration(2000);
 		NXTRegulatedMotor second = null;
+		NXTRegulatedMotor prems = null;
 		long start = 0;
 		long stop = 0;
 		pilote.forward();
@@ -252,16 +253,18 @@ public class ChangeSquare extends DifferentialPilot {
 			while (lightD.getNormalizedLightValue() < valeurSeuilDroit)
 				;
 			stop = System.currentTimeMillis();
+			prems = motorG;
 			second = motorD;
 		} else {
 			while (lightG.getNormalizedLightValue() < valeurSeuilGauche)
 				;
 			stop = System.currentTimeMillis();
-			second = motorG;
+			prems = motorD;
+			second = motorG;	
 		}
 		long delai = stop - start;
 		pilote.stop();
-		if (delai > /*15*/ 30) {
+		if (delai > /*15*/ 100) {
 			second.rotate((int) (delai/2.2));
 		}
 		//Delay.msDelay(1000);
