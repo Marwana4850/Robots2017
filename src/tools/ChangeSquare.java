@@ -20,6 +20,8 @@ public class ChangeSquare extends DifferentialPilot {
 	public static double wheelDiameter = 55.5;
 	public static double trackWidth = 100;
 
+	public static Double dist = (double) 255;
+			
 	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 
 	public ChangeSquare(final double wheelDiameter, final double trackWidth, final NXTRegulatedMotor leftMotor,
@@ -285,9 +287,20 @@ public class ChangeSquare extends DifferentialPilot {
 		// Delay.msDelay(1000);
 		motorG.setSpeed(420);
 		motorD.setSpeed(420);
-		Motor.B.setAcceleration(6000);
-		Motor.C.setAcceleration(6000);
-		pilote.travel(200);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
+		
+		pilote.travel(200, true);
+		
+		this.tete.rotateTo(-90); // regarde à gauche
+		dist = (double) this.ultrasonic.getDistance(); // attention c'est en cm !							
+		LCD.drawString(dist.toString(), 1, 1);
+		if (dist == 255 || dist >= 40) {
+			this.tete.rotateTo(90);// regarde à droite	
+			dist = (double) this.ultrasonic.getDistance();
+			LCD.drawString(dist.toString(), 1, 2);}
+		this.tete.rotateTo(0);
+		Delay.msDelay(3000);
 	}
 
 }
