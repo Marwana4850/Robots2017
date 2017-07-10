@@ -251,6 +251,7 @@ public class ChangeSquare extends DifferentialPilot {
 		long start = 0;
 		long stop = 0;
 		int têta = 0;
+		int angularSpeed = 0;
 		pilote.forward();
 		while (lightG.getNormalizedLightValue() < valeurSeuilGauche
 				&& lightD.getNormalizedLightValue() < valeurSeuilDroit)
@@ -270,19 +271,22 @@ public class ChangeSquare extends DifferentialPilot {
 			second = motorG;
 		}
 		long delai = stop - start;
-		pilote.stop();
-		if (delai > /* 15 */ 100) {
+		//pilote.stop();
+		if (delai > /* 15 */ 30) {
 			// second.rotate((int) (delai/2.2));
-			têta = (int) (Math.atan(0.2 * delai / trackWidth)* 180 / Math.PI); // en degrés
+			têta = (int) (Math.atan(0.2 * delai * 0.001 / (trackWidth*0.001))* 180 / Math.PI); // en degrés
+			int sp = motorD.getSpeed();
+			angularSpeed = (int) ((2 * Math.PI * 0.5 * wheelDiameter * (sp /360) / (2 * Math.PI * trackWidth)) * 360); // en degrés
 			prems.setSpeed(0);
+			//prems.stop();
 			//second.rotate(têta);
-			Delay.msDelay(têta/420);
+			Delay.msDelay(têta*1000/angularSpeed);
 		}
 		// Delay.msDelay(1000);
 		motorG.setSpeed(420);
 		motorD.setSpeed(420);
-		Motor.B.setAcceleration(1200);
-		Motor.C.setAcceleration(1200);
+		Motor.B.setAcceleration(6000);
+		Motor.C.setAcceleration(6000);
 		pilote.travel(200);
 	}
 

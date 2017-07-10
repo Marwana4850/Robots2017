@@ -41,10 +41,10 @@ public class MainSquares {
 		pilote.goBackSquare();
 		pilote.rotate(-90);*/
 		
-		motorG.setSpeed(100);
-		motorD.setSpeed(100);
-		Motor.B.setAcceleration(2000);
-		Motor.C.setAcceleration(2000);
+		motorG.setSpeed(420);
+		motorD.setSpeed(420);
+		Motor.B.setAcceleration(1500);
+		Motor.C.setAcceleration(1500);
 		
 		/*pilote.travel(200);
 		LCD.drawString("RECALAGE", 3 , 6);
@@ -68,8 +68,9 @@ public class MainSquares {
 		pilote.avanceUneCase();
 		Delay.msDelay(1000);*/
 		
-		String[] parcours = {"f","l","r","f","f","r"};
-		pilote.parcours(parcours);
+		//String[] parcours = {"f","l","r","f","f","r"};
+		//pilote.parcours(parcours);
+		pilote.avanceUneCase();
 		
 		LCD.clear();
 		}
