@@ -20,7 +20,8 @@ public class ChangeSquare extends DifferentialPilot {
 	public static double wheelDiameter = 55.5;
 	public static double trackWidth = 100;
 
-	public static Double dist = (double) 255;
+	public static Double dist = (double) 0;
+	public static String côté = "";
 			
 	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 
@@ -106,15 +107,6 @@ public class ChangeSquare extends DifferentialPilot {
 		// celle en face du robot
 		// si ce n'est pas le cas il faut faire une rotation
 
-		this.tete.rotateTo(-90); // regarde à gauche
-
-		// Delay.msDelay(400);
-		Double dist = (double) this.ultrasonic.getDistance(); // attention c'est
-																// en cm !
-		LCD.drawString(dist.toString(), 1, 1);
-		// Button.waitForAnyPress();
-		LCD.clear();
-
 		Double distanceDeRecalage = (double) 100;
 		Double a = (double) 0;
 		Double b = (double) 0;
@@ -122,79 +114,62 @@ public class ChangeSquare extends DifferentialPilot {
 		Double parcours = (double) 0;
 		Integer signe = 1;
 
-		if (dist == 255 || dist >= 40) {
-			this.tete.rotateTo(90);// regarde à droite
-			// Delay.msDelay(400);
-			dist = (double) this.ultrasonic.getDistance();
-			LCD.drawString(dist.toString(), 1, 1);
-			// Button.waitForAnyPress();
-			LCD.clear();
+		if (dist < 40) {
 
-			this.tete.rotateTo(0);
-
-			if (dist < 40) {
+			if (côté.contentEquals("g")) {
 				if (dist >= 20) {
 					b = dist * 10;
 					LCD.drawString(b.toString(), 1, 4);
 					a = 400 - b;
 					LCD.drawString(a.toString(), 1, 5);
-					signe = -1;
+					signe = +1;
 				}
 				if (dist < 20) {
 					a = dist * 10;
 					b = 400 - a;
 					LCD.drawString(b.toString(), 1, 4);
 					LCD.drawString(a.toString(), 1, 5);
-					signe = 1;
+					signe = -1;
 				}
-				if (a <= 150) {
+				if (a <= 250) {
 					angle = signe * Math.atan((b - 200) / distanceDeRecalage) * 180 / Math.PI;
 					LCD.drawString(angle.toString(), 1, 2);
-					// Delay.msDelay(1000);
-					this.tete.rotateTo(0);
-
-					// if(angle>=20 || angle<=-20){
 
 					motorG.setSpeed(420);
 					motorD.setSpeed(420);
-					Motor.B.setAcceleration(500);
-					Motor.C.setAcceleration(500);
+					Motor.B.setAcceleration(1500);
+					Motor.C.setAcceleration(1500);
 
 					pilote.rotate(angle);
-					// Delay.msDelay(500);
 					parcours = Math.sqrt(distanceDeRecalage * distanceDeRecalage + (b - 200) * (b - 200));
 					LCD.drawString(parcours.toString(), 1, 3);
 					pilote.travel(parcours);
-					// Delay.msDelay(500);
-					pilote.rotate((-1) * angle); // pour se remettre à peu près
-													// droit
-					// }
+					pilote.rotate((-1) * angle); // pour se remettre à peu près droit											
+					
 				}
-				this.tete.rotateTo(0);
 			}
-		} else {
+			//Delay.msDelay(3000);
+		} 
+		
+		if(côté.contentEquals("d") && dist < 40){
+			
 			if (dist >= 20) {
 				b = dist * 10;
 				LCD.drawString(b.toString(), 1, 4);
 				a = 400 - b;
 				LCD.drawString(a.toString(), 1, 5);
-				signe = 1;
+				signe = -1;
 			}
 			if (dist < 20) {
 				a = dist * 10;
-
 				b = 400 - a;
 				LCD.drawString(b.toString(), 1, 4);
 				LCD.drawString(a.toString(), 1, 5);
-				signe = -1;
+				signe = +1;
 			}
-			if (a <= 150) {
+			if (a <= 250) {
 				angle = signe * Math.atan((b - 200) / distanceDeRecalage) * 180 / Math.PI;
 				LCD.drawString(angle.toString(), 1, 2);
-				// Delay.msDelay(1000);
-				this.tete.rotateTo(0);
-
-				// if(angle>=20 || angle<=-20){
 
 				motorG.setSpeed(420);
 				motorD.setSpeed(420);
@@ -202,17 +177,11 @@ public class ChangeSquare extends DifferentialPilot {
 				Motor.C.setAcceleration(700);
 
 				pilote.rotate(angle);
-				// Delay.msDelay(500);
 				parcours = Math.sqrt(distanceDeRecalage * distanceDeRecalage + (b - 200) * (b - 200));
 				LCD.drawString(parcours.toString(), 1, 3);
 				pilote.travel(parcours);
-				// Delay.msDelay(500);
-				pilote.rotate((-1) * angle); // pour se remettre à peu près
-												// droit
-				// }
+				pilote.rotate((-1) * angle); // pour se remettre à peu près droit
 			}
-			this.tete.rotateTo(0);
-
 		}
 		// Button.waitForAnyPress();
 		LCD.clear();
@@ -293,14 +262,16 @@ public class ChangeSquare extends DifferentialPilot {
 		pilote.travel(200, true);
 		
 		this.tete.rotateTo(-90); // regarde à gauche
+		côté = "g";
 		dist = (double) this.ultrasonic.getDistance(); // attention c'est en cm !							
 		LCD.drawString(dist.toString(), 1, 1);
 		if (dist == 255 || dist >= 40) {
 			this.tete.rotateTo(90);// regarde à droite	
+			côté = "d";
 			dist = (double) this.ultrasonic.getDistance();
 			LCD.drawString(dist.toString(), 1, 2);}
 		this.tete.rotateTo(0);
-		Delay.msDelay(3000);
+		//Delay.msDelay(3000);
 	}
 
 }
