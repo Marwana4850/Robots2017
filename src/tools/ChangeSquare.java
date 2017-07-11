@@ -24,7 +24,8 @@ public class ChangeSquare extends DifferentialPilot {
 	private LightSensor lightG = new LightSensor(SensorPort.S4); //capteur lumineux gauche
 	private LightSensor lightD = new LightSensor(SensorPort.S3); //capteur lumineux droit
 	public static NXTRegulatedMotor tete = Motor.A; //moteur qui permet de tourner l'axe sur lequel se trouve le capteur ultrason
-	
+	public static Double distanceDeRecalage = (double) 90; //spécifie sur combien de mm le robot va effectuer son recalage
+	//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
 	
 	
 	/*
@@ -100,6 +101,7 @@ public class ChangeSquare extends DifferentialPilot {
 		Motor.B.setAcceleration(1000);
 		Motor.C.setAcceleration(1000);
 		pilote.avanceUneCase();
+		pilote.travel(distanceDeRecalage);
 	}
 
 	//Pour faire demi-tour 
@@ -135,6 +137,7 @@ public class ChangeSquare extends DifferentialPilot {
 		Motor.B.setAcceleration(1000);
 		Motor.C.setAcceleration(1000);
 		pilote.avanceUneCase();
+		pilote.travel(distanceDeRecalage);
 	}
 
 	//Pour aller sur la case de gauche 
@@ -170,6 +173,7 @@ public class ChangeSquare extends DifferentialPilot {
 		Motor.B.setAcceleration(1000);
 		Motor.C.setAcceleration(1000);
 		pilote.avanceUneCase();
+		pilote.travel(distanceDeRecalage);
 	}
 
 	//Pour aller sur la case de droite 
@@ -205,6 +209,7 @@ public class ChangeSquare extends DifferentialPilot {
 		Motor.B.setAcceleration(1000);
 		Motor.C.setAcceleration(1000);
 		pilote.avanceUneCase();
+		pilote.travel(distanceDeRecalage);
 	}
 	
 	
@@ -219,7 +224,7 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		String x = "";
 		
-		for (int i=0 ; i<parcours.length ; i++) {
+		for (int i = 0 ; i < (parcours.length-1) ; i++) {
 			x = parcours[i];
 			if (x.equals("r") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller à droite
 				pilote.goRightSquare();
@@ -228,10 +233,10 @@ public class ChangeSquare extends DifferentialPilot {
 				pilote.goLeftSquare();
 			}
 			if (x.equals("r") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour à droite avant de tourner
-				pilote.goRightSquareBeforeTurn();
+				pilote.goRightSquare();
 			}
 			if (x.equals("l") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour aller à gauche avant de tourner
-				pilote.goLeftSquareBeforeTurn();
+				pilote.goLeftSquare();
 			}
 			if (x.equals("f") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller tout droit
 				pilote.goFrontSquare();
@@ -240,11 +245,25 @@ public class ChangeSquare extends DifferentialPilot {
 				pilote.goBackSquare();
 			}
 			if (x.equals("f") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour aller tout droit avant de tourner
-				pilote.goFrontSquareBeforeTurn();
+				pilote.goFrontSquare();
 			}
 			if (x.equals("b") && (parcours[i+1].equals("r") || parcours[i+1].equals("l"))) {// pour faire demi-tour avant de tourner
-				pilote.goBackSquareBeforeTurn();
+				pilote.goBackSquare();
 			}
+		}
+		
+		String y = parcours[parcours.length]; // dernier déplacment
+		if (x.equals("r")) {// pour aller à droite
+			pilote.goRightSquare();
+		}
+		if (x.equals("l")) {// pour aller à gauche
+			pilote.goLeftSquare();
+		}
+		if (x.equals("f")) {// pour aller tout droit
+			pilote.goFrontSquare();
+		}
+		if (x.equals("b")) {// pour faire demi-tour
+			pilote.goBackSquare();
 		}
 	}
 
@@ -261,10 +280,8 @@ public class ChangeSquare extends DifferentialPilot {
 		
 		/*Eléments à changer en fonction de ses préférences*/
 		
-		Double distanceDeRecalage = (double) 130; //spécifie sur combien de mm le robot va effectuer son recalage
-		//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
 		Double distanceMiniDeRecalage = (double) 200; //spécifie à partir de quelle distance au mur le robot va se recaler
-		
+
 		
 		/*Variables*/
 		
@@ -304,9 +321,7 @@ public class ChangeSquare extends DifferentialPilot {
 					pilote.rotate((-1) * angle); // pour se remettre à peu près droit après le recalage											
 					
 				}
-				if(a > distanceMiniDeRecalage){
-					pilote.travel(distanceDeRecalage); //s'il n'y a pas besoin de se recaler, le robot avance tout droit
-				}
+				
 			}
 		
 			
@@ -335,12 +350,16 @@ public class ChangeSquare extends DifferentialPilot {
 					pilote.travel(parcours);
 					pilote.rotate((-1) * angle); // pour se remettre à peu près droit après le recalage
 				}
-				if(a > distanceMiniDeRecalage){
-					pilote.travel(distanceDeRecalage); //s'il n'y a pas besoin de se recaler, le robot avance tout droit
-				}
+			
 			}	
+	
 		}	
 		
+		if(a > distanceMiniDeRecalage || dist >= 40){
+			pilote.travel(distanceDeRecalage); //s'il n'y a pas besoin de se recaler, le robot avance tout droit
+		}
+		
+		//Button.waitForAnyPress();
 		LCD.clear();	
 	}
 
@@ -365,7 +384,7 @@ public class ChangeSquare extends DifferentialPilot {
 		long stop = 0; //temps auquel la deuxième roue passe la ligne
 		int têta = 0; //angle (par rapport à sa roue arrêtée) duquel le robot doit tourner pour se remettre droit
 		int angularSpeed = 0; //vitesse angulaire de rotation du robot quand une roue est arrêtée et l'autre non
-		int distanceAprèsRecalageLigne = 110; //distance de laquelle le robot avance juste après s'être recalé sur la ligne
+		int distanceAprèsRecalageLigne = 150; //distance de laquelle le robot avance juste après s'être recalé sur la ligne
 		int delaiMiniRecalage = 30; //delai minimum entre le passage des 2 roues sur la ligne pour que le robot se recale
 		
 		
@@ -433,6 +452,7 @@ public class ChangeSquare extends DifferentialPilot {
 			}
 		}
 		
+		//Button.waitForAnyPress();
 		LCD.clear();
 	}
 }
