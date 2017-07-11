@@ -15,32 +15,49 @@ public class ChangeSquare extends DifferentialPilot {
 
 	
 	
-	/*Eléments à changer en fonction de la construction mécanique du robot*/
+	/*
+	 * Eléments à changer en fonction de la construction mécanique du robot
+	 * 
+	 */
 	
 	private UltrasonicSensor ultrasonic = new UltrasonicSensor(SensorPort.S1); //capteur Ultrason
 	private LightSensor lightG = new LightSensor(SensorPort.S4); //capteur lumineux gauche
 	private LightSensor lightD = new LightSensor(SensorPort.S3); //capteur lumineux droit
+	public static NXTRegulatedMotor tete = Motor.A; //moteur qui permet de tourner l'axe sur lequel se trouve le capteur ultrason
+	
+	
+	
+	/*
+	 * Initialisations
+	 *
+	 */
+	
 	public static NXTRegulatedMotor motorG = Motor.C; //moteur gauche
 	public static NXTRegulatedMotor motorD = Motor.B; //moteur droit
-	public static NXTRegulatedMotor tete = Motor.A; //moteur qui permet de tourner l'axe sur lequel se trouve le capteur ultrason
 	public static double wheelDiameter = 55.5; //diamètre des roues
 	public static double trackWidth = 100; //écart entre les roues (attention, à régler assez empiriquement
 										   //jusqu'à avoir des rotations précises du robot)
 
 
 		
-	/*Variables utilisées dans plusieurs fonctions*/
+	/*
+	 * Variables utilisées dans plusieurs fonctions
+	 * 
+	 */
 	
 	public static Double dist = (double) 0;
 	public static Double distFace = (double) 0;
 	public static String côté = "";
 	static DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
-	private static final int valeurSeuilGauche = 487; 	// Valeur seuil pour différencier le noir et le blanc
-	private static final int valeurSeuilDroit = 487;
+	private static final int valeurSeuilGauche = 487; // Valeur seuil pour différencier le noir et le blanc
+	private static final int valeurSeuilDroit = 487; // Valeur seuil pour différencier le noir et le blanc
 
 
 		
-	/*Constructeur*/
+	/*
+	 * Constructeur
+	 * 
+	 */
 	
 	public ChangeSquare(final double wheelDiameter, final double trackWidth, final NXTRegulatedMotor leftMotor,
 			final NXTRegulatedMotor rightMotor) {
@@ -55,7 +72,10 @@ public class ChangeSquare extends DifferentialPilot {
 
 	
 	
-	/*Fonctions  simples de changement de case*/
+	/*
+	 * Fonctions  simples de changement de case
+	 * 
+	 */
 	
 	//Pour aller sur la case d'en face
 	
@@ -189,7 +209,10 @@ public class ChangeSquare extends DifferentialPilot {
 	
 	
 
-	/*Fonction qui lit le parcours que doit faire le robot (parcours spécifié dans le main)*/
+	/*
+	 * Fonction qui lit le parcours que doit faire le robot (parcours spécifié dans le main)
+	 * 
+	 */
 	
 	public void parcours(String[] parcours) {
 		
@@ -227,15 +250,21 @@ public class ChangeSquare extends DifferentialPilot {
 
 	
 
-	/*Fonction qui recale (latéralement) le robot au centre de la case, en se basant sur "dist" obtenue dans la fonction avanceUneCase()*/ 
+	/*
+	 * Fonction qui recale (latéralement) le robot au centre de la case, en se basant sur "dist" obtenue dans la fonction avanceUneCase()
+	 * 
+	 */ 
+	
 	
 	public void recalage() {
+		
 		
 		/*Eléments à changer en fonction de ses préférences*/
 		
 		Double distanceDeRecalage = (double) 130; //spécifie sur combien de mm le robot va effectuer son recalage
 		//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
 		Double distanceMiniDeRecalage = (double) 200; //spécifie à partir de quelle distance au mur le robot va se recaler
+		
 		
 		/*Variables*/
 		
@@ -317,10 +346,16 @@ public class ChangeSquare extends DifferentialPilot {
 
 	
 
-	/*Fonction qui permet au robot de changer de case*/
+	/*
+	 * Fonction qui permet au robot de changer de case
+	 * 
+	 */
+	
 	/*Le robot se remet droit sur la ligne blanche puis continue à avancer tout en mesurant sa distance aux murs*/
 	
+	
 	public void avanceUneCase() {
+		
 		
 		/*Variables*/
 		
