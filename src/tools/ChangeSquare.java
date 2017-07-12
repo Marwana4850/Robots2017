@@ -224,7 +224,7 @@ public class ChangeSquare extends DifferentialPilot {
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		String x = "";
 		
-		for (int i = 0 ; i < (parcours.length-1) ; i++) {
+		for (int i = 0 ; i < (parcours.length-2) ; i++) {
 			x = parcours[i];
 			if (x.equals("r") && !parcours[i+1].equals("r") && !parcours[i+1].equals("l")) {// pour aller à droite
 				pilote.goRightSquare();
@@ -252,7 +252,7 @@ public class ChangeSquare extends DifferentialPilot {
 			}
 		}
 		
-		String y = parcours[parcours.length]; // dernier déplacment
+		String y = parcours[parcours.length-1]; // dernier déplacment
 		if (x.equals("r")) {// pour aller à droite
 			pilote.goRightSquare();
 		}
