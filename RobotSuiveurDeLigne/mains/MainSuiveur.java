@@ -31,9 +31,9 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		
 		NXTRegulatedMotor motorG = Motor.C;
 		NXTRegulatedMotor motorD = Motor.B;
-		Integer VitesseMoteurs = 150;
-		Integer VitesseMoteurDroit = 150;
-		Integer VitesseMoteurGauche = 150;
+		Integer VitesseMoteurs = 250;
+		Integer VitesseMoteurDroit = 250;
+		Integer VitesseMoteurGauche = 250;
 		Integer VitesseGauche = 0;
 		Integer VitesseDroite = 0;
 		
@@ -41,8 +41,11 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		ToolOne PID2 = new ToolOne();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
-		Float k = (float) 0.3;
+		Float k = (float) 0.4;
 		Integer valPID = 0;
+		
+		String ProchaineRoute = "";
+		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
 		
 		
 		while(true){
@@ -65,11 +68,11 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			}
 			
 			
-			else if(LDroite < valeurSeuilNoir){ //on voit du noir à droite
+			else if(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir){ //on voit du noir à droite
 				LCD.clear();
 				LCD.drawString("Noir droite", 1, 3);
 				//tourner à gauche		
-				while(LDroite < valeurSeuilNoir){
+				while(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir){
 					//PID
 					EcartARetenir = PID1.getEcartALaValeurNoire(LDroite, valeurSeuilNoir);
 					
@@ -86,11 +89,11 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 				}
 				PID1 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			else if(LGauche < valeurSeuilNoir){ //on voit du noir à gauche
+			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir){ //on voit du noir à gauche
 				LCD.clear();
 				LCD.drawString("Noir gauche", 1, 3);
 				//tourner à droite
-				while(LGauche < valeurSeuilNoir){
+				while(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir){
 					//PID
 					EcartARetenir = PID2.getEcartALaValeurNoire(LGauche, valeurSeuilNoir);
 					
@@ -107,9 +110,20 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 				}
 				PID2 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			
-			
-			
+			else if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir ){
+				LCD.drawString("intersection à 2 branches", 1, 3);
+				ProchaineRoute = "r";
+				//ProchaineRoute = "l"
+				if(ProchaineRoute.equals("r")){
+					pilote.rotate(-30);
+				}
+				if(ProchaineRoute.equals("l")){
+					pilote.rotate(+30);
+				}
+				
+			}
+
 		}
 	}
+	
 }

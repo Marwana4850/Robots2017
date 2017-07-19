@@ -19,7 +19,7 @@ public class ToolOne {
 		this.valPID = 0;
 		this.somme_erreur = 0;
 		this.variation_erreur = 0;
-		this.kp = 20;
+		this.kp = 10;
 		this.ki = 0;
 		this.kd = 100;
 	}
