@@ -27,7 +27,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		LightSensor lightD = new LightSensor(SensorPort.S3); //capteur lumineux droit
 		Integer LGauche = lightG.getNormalizedLightValue();
 		Integer LDroite = lightD.getNormalizedLightValue();
-		Integer valeurSeuilNoir = 497;
+		Integer valeurSeuilNoir = 505;
 		
 		NXTRegulatedMotor motorG = Motor.C;
 		NXTRegulatedMotor motorD = Motor.B;
@@ -41,11 +41,12 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		ToolOne PID2 = new ToolOne();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
-		Float k = (float) 0.4;
+		Float k = (float) 0.3;
 		Integer valPID = 0;
 		
 		String ProchaineRoute = "";
 		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		boolean intersection = false;
 		
 		
 		while(true){
@@ -59,7 +60,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			motorG.forward();
 			motorD.forward();
 			
-			if(LGauche > valeurSeuilNoir && LDroite > valeurSeuilNoir){
+			if(LGauche > valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){
 				LCD.clear();
 				LCD.drawString("Blanc", 1, 3);
 				//aller tout droit
@@ -68,11 +69,11 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			}
 			
 			
-			else if(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir){ //on voit du noir à droite
+			else if(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir && !intersection){ //on voit du noir à droite
 				LCD.clear();
 				LCD.drawString("Noir droite", 1, 3);
 				//tourner à gauche		
-				while(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir){
+				while(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir && !intersection){
 					//PID
 					EcartARetenir = PID1.getEcartALaValeurNoire(LDroite, valeurSeuilNoir);
 					
@@ -85,15 +86,20 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					motorG.setSpeed(VitesseGauche);
 					
 					//on remesure
+					LGauche = lightG.getNormalizedLightValue();
 					LDroite = lightD.getNormalizedLightValue();
+					
+					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){
+						intersection = true;
+					}
 				}
 				PID1 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir){ //on voit du noir à gauche
+			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){ //on voit du noir à gauche
 				LCD.clear();
 				LCD.drawString("Noir gauche", 1, 3);
 				//tourner à droite
-				while(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir){
+				while(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){
 					//PID
 					EcartARetenir = PID2.getEcartALaValeurNoire(LGauche, valeurSeuilNoir);
 					
@@ -107,18 +113,69 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					
 					//on remesure
 					LGauche = lightG.getNormalizedLightValue();
+					LDroite = lightD.getNormalizedLightValue();
+					
+					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){
+						intersection = true;
+					}
 				}
 				PID2 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			else if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir ){
+			else if((LGauche < valeurSeuilNoir && LDroite < valeurSeuilNoir) || intersection){
+				intersection = false;
 				LCD.drawString("intersection à 2 branches", 1, 3);
-				ProchaineRoute = "r";
+				ProchaineRoute = "l";
 				//ProchaineRoute = "l"
+				Integer ValeurCapteur = valeurSeuilNoir;
+				
 				if(ProchaineRoute.equals("r")){
-					pilote.rotate(-30);
+					//pendant 2 sec, ignore le capteur gauche
+					LCD.drawString("va à droite", 1, 4);
+					long start = System.currentTimeMillis();
+					long end = System.currentTimeMillis();
+					
+					ValeurCapteur = lightG.getNormalizedLightValue();
+					while(end - start < 2000 /*ValeurCapteur <= valeurSeuilNoir*/){
+						ValeurCapteur = lightG.getNormalizedLightValue();
+						
+						LGauche = valeurSeuilNoir;
+						EcartARetenir = PID1.getEcartALaValeurNoire(LDroite, valeurSeuilNoir);
+						valPID = PID1.valeurPID();
+						PID1.setEcartPrecedent(EcartARetenir);
+						VitesseGauche = (int) (valPID*k + VitesseMoteurDroit);
+						motorD.setSpeed(VitesseMoteurDroit);
+						motorG.setSpeed(VitesseGauche);
+						LDroite = lightD.getNormalizedLightValue();	
+						
+						end = System.currentTimeMillis();
+					}
+					PID1 = new ToolOne(); //on remet à 0 les valeurs
+					LCD.clear();
+						
 				}
-				if(ProchaineRoute.equals("l")){
-					pilote.rotate(+30);
+				else if(ProchaineRoute.equals("l")){
+					LCD.drawString("va à gauche", 1, 4);
+					long start = System.currentTimeMillis();
+					long end = System.currentTimeMillis();
+					
+					ValeurCapteur = lightD.getNormalizedLightValue();
+					while(end - start < 2000 /*ValeurCapteur <= valeurSeuilNoir*/){
+						ValeurCapteur = lightD.getNormalizedLightValue();
+						
+						LDroite = valeurSeuilNoir;
+						EcartARetenir = PID2.getEcartALaValeurNoire(LGauche, valeurSeuilNoir);
+						valPID = PID2.valeurPID();
+						PID2.setEcartPrecedent(EcartARetenir);
+						VitesseDroite = (int) (valPID*k + VitesseMoteurGauche);
+						motorD.setSpeed(VitesseDroite);
+						motorG.setSpeed(VitesseMoteurGauche);
+						LGauche = lightG.getNormalizedLightValue();
+						
+						end = System.currentTimeMillis();
+					}
+					PID2 = new ToolOne(); //on remet à 0 les valeurs
+					LCD.clear();
+					
 				}
 				
 			}
