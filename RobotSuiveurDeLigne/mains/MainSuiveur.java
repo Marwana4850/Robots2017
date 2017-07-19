@@ -41,7 +41,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		ToolOne PID2 = new ToolOne();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
-		Float k = (float) 0.3;
+		Float k = (float) 0.5;
 		Integer valPID = 0;
 		
 		String ProchaineRoute = "";
@@ -135,7 +135,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightG.getNormalizedLightValue();
-					while(end - start < 2000 /*ValeurCapteur <= valeurSeuilNoir*/){
+					while(end - start < 1200 /*ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightG.getNormalizedLightValue();
 						
 						LGauche = valeurSeuilNoir;
@@ -159,7 +159,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightD.getNormalizedLightValue();
-					while(end - start < 2000 /*ValeurCapteur <= valeurSeuilNoir*/){
+					while(end - start < 1200 /*ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightD.getNormalizedLightValue();
 						
 						LDroite = valeurSeuilNoir;

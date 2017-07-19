@@ -9,7 +9,7 @@ public class ToolOne {
 	Integer valPID = 0;
 	Integer somme_erreur = 0;
 	Integer variation_erreur = 0;
-	Integer kp = 20;
+	Integer kp = 25;
 	Integer ki = 0;
 	Integer kd = 100;
 			
@@ -19,7 +19,7 @@ public class ToolOne {
 		this.valPID = 0;
 		this.somme_erreur = 0;
 		this.variation_erreur = 0;
-		this.kp = 10;
+		this.kp = 25;
 		this.ki = 0;
 		this.kd = 100;
 	}
