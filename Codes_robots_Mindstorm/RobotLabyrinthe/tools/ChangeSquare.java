@@ -11,6 +11,7 @@ import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 
+@SuppressWarnings("unused")
 public class ChangeSquare extends DifferentialPilot {
 
 	
@@ -253,16 +254,16 @@ public class ChangeSquare extends DifferentialPilot {
 		}
 		
 		String y = parcours[parcours.length-1]; // dernier déplacment
-		if (x.equals("r")) {// pour aller à droite
+		if (y.equals("r")) {// pour aller à droite
 			pilote.goRightSquare();
 		}
-		if (x.equals("l")) {// pour aller à gauche
+		if (y.equals("l")) {// pour aller à gauche
 			pilote.goLeftSquare();
 		}
-		if (x.equals("f")) {// pour aller tout droit
+		if (y.equals("f")) {// pour aller tout droit
 			pilote.goFrontSquare();
 		}
-		if (x.equals("b")) {// pour faire demi-tour
+		if (y.equals("b")) {// pour faire demi-tour
 			pilote.goBackSquare();
 		}
 	}
@@ -431,18 +432,18 @@ public class ChangeSquare extends DifferentialPilot {
 		
 		pilote.travel(distanceAprèsRecalageLigne, true);
 		
-		this.tete.rotateTo(-90); // regarde à gauche
+		ChangeSquare.tete.rotateTo(-90); // regarde à gauche
 		côté = "g";
 		dist = (double) this.ultrasonic.getDistance(); // attention c'est en cm !							
 		LCD.drawString(dist.toString(), 1, 1);
 		
 		if (dist == 255 || dist >= 40) { //s'il ne voit pas de mur à gauche
-			this.tete.rotateTo(90);// regarde à droite	
+			ChangeSquare.tete.rotateTo(90);// regarde à droite	
 			côté = "d";
 			dist = (double) this.ultrasonic.getDistance();
 			LCD.drawString(dist.toString(), 1, 2);
 			}
-		this.tete.rotateTo(0);
+		ChangeSquare.tete.rotateTo(0);
 		distFace = (double) this.ultrasonic.getDistance();
 		
 		while(pilote.isMoving()){

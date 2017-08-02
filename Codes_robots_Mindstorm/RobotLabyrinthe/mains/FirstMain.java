@@ -10,6 +10,7 @@ import java.lang.Integer;
 import lejos.nxt.comm.RConsole;
 
 
+@SuppressWarnings("unused")
 public class FirstMain {
 	public static void main(String[] args) {
 		

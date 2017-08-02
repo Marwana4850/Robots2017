@@ -1,7 +1,5 @@
 package tools;
 
-import lejos.nxt.NXTRegulatedMotor;
-
 public class ToolOne {
 	
 	Integer EcartALaValeurNoire = 0;

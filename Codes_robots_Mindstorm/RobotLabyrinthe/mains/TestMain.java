@@ -2,12 +2,9 @@ package mains;
 
 import lejos.nxt.Motor;
 
-import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
-import lejos.nxt.Motor;
 import java.lang.Integer;
-import lejos.nxt.comm.RConsole;
 import lejos.util.Delay;
 
 public class TestMain {

@@ -3,7 +3,6 @@ package mains;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.util.Delay;
 import lejos.nxt.Button;
 
 public class MainParcours {

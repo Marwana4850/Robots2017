@@ -3,14 +3,16 @@ package mains;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
-import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import lejos.nxt.Button;
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import tools.ChangeSquare;
+import lejos.nxt.LCD;
 
+
+@SuppressWarnings("unused")
 public class Main {
+
 	public static void main(String[] args) {
 		
 		
