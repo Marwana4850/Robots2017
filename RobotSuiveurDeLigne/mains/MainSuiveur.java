@@ -41,7 +41,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		ToolOne PID2 = new ToolOne();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
-		Float k = (float) 0.5;
+		Float k = (float) 0.6;
 		Integer valPID = 0;
 		
 		String ProchaineRoute = "";
