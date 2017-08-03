@@ -3,13 +3,12 @@ package mains;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
-import tools.ChangeSquare;
-
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.util.Delay;
+import tools.ChangeSquare;
 
 @SuppressWarnings("unused")
 public class MainSquares {

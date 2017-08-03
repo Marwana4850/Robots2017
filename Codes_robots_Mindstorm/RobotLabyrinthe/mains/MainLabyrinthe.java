@@ -3,7 +3,6 @@ package mains;
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import tools.ChangeSquare;
-
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 
@@ -44,7 +43,7 @@ public class MainLabyrinthe {
 		
 		String[] parcours = {"f","l","l","r","f","r","b","r","r","b","l","f","f","l","r","r","b"};
 		//String[] parcours = {"f","l","r","f","f","r"};
-		pilote.parcours(parcours);	
+		pilote.parcours(parcours);
 				
 		}
 	}	

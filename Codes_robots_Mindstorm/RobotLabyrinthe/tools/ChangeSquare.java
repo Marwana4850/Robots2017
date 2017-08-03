@@ -269,6 +269,53 @@ public class ChangeSquare extends DifferentialPilot {
 	}
 
 	
+	
+	
+	
+	public void goSimple(String d){
+		motorG.setSpeed(200);
+		motorD.setSpeed(200);
+		Motor.B.setAcceleration(1000);
+		Motor.C.setAcceleration(1000);
+		if(d.equals("f")){
+			pilote.travel(405);
+		}
+		if(d.equals("b")){
+			pilote.rotate(180);
+			pilote.travel(405);
+		}
+		if(d.equals("r")){
+			pilote.rotate(-90);
+			pilote.travel(405);
+		}
+		if(d.equals("l")){
+			pilote.rotate(90);
+			pilote.travel(405);
+		}
+	}
+	public void parcoursSimple(String[] parcours) {
+			
+			ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+			String x = "";
+			
+			for (int i = 0 ; i < (parcours.length) ; i++) {
+				x = parcours[i];
+				if (x.equals("r")) {// pour aller à droite
+					pilote.goSimple("r");
+				}
+				if (x.equals("l")) {// pour aller à gauche
+					pilote.goSimple("l");
+				}
+				if (x.equals("f")) {// pour aller tout droit
+					pilote.goSimple("f");
+				}
+				if (x.equals("b")) {// pour faire demi-tour
+					pilote.goSimple("b");
+				}
+			}
+			
+		}
+	
 
 	/*
 	 * Fonction qui recale (latéralement) le robot au centre de la case, en se basant sur "dist" obtenue dans la fonction avanceUneCase()
