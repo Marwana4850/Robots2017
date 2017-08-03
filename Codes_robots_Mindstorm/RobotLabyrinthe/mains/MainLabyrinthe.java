@@ -27,7 +27,7 @@ public class MainLabyrinthe {
 		NXTRegulatedMotor motorG = Motor.C;
 		NXTRegulatedMotor motorD = Motor.B;
 		Double wheelDiameter = 55.5; //diamètre des roues
-		Double trackWidth = (double) 100; //écart entre les roues 
+		Double trackWidth = (double) 165; //écart entre les roues 
 										  //(attention, à régler assez empiriquement jusqu'à avoir des rotations précises du robot)
 		
 		ChangeSquare pilote = new ChangeSquare(wheelDiameter, trackWidth, motorG, motorD); 
@@ -41,9 +41,9 @@ public class MainLabyrinthe {
 		
 		// "f"="devant", "b"="demi-tour", "l"="à gauche", "r"= "à droite"
 		
-		String[] parcours = {"f","l","l","r","f","r","b","r","r","b","l","f","f","l","r","r","b"};
+		String[] parcours = {"f","l","l","r","f","r","b","r","r","b","l","f","f","l","r","r","r"};
 		//String[] parcours = {"f","l","r","f","f","r"};
-		pilote.parcours(parcours);
+		pilote.parcoursAvecLigne(parcours);
 				
 		}
 	}	
