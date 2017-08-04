@@ -26,7 +26,7 @@ public class ChangeSquare extends DifferentialPilot {
 	private LightSensor lightD = new LightSensor(SensorPort.S3); //capteur lumineux droit
 	public NXTRegulatedMotor tete = Motor.A; //moteur qui permet de tourner l'axe sur lequel se trouve le capteur ultrason
 	public Double distanceDeRecalage = (double) 90; //spécifie sur combien de mm le robot va effectuer son recalage
-	//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
+	//attention, (distanceDeRecalage + distanceApresRecalageLigne = 240)
 	
 	
 	
@@ -493,9 +493,9 @@ public class ChangeSquare extends DifferentialPilot {
 		NXTRegulatedMotor second = null; //second moteur dont la roue passe la ligne blanche
 		long start = 0; //temps auquel la première roue passe la ligne
 		long stop = 0; //temps auquel la deuxième roue passe la ligne
-		int têta = 0; //angle (par rapport à sa roue arrêtée) duquel le robot doit tourner pour se remettre droit
+		int theta = 0; //angle (par rapport à sa roue arrêtée) duquel le robot doit tourner pour se remettre droit
 		int angularSpeed = 0; //vitesse angulaire de rotation du robot quand une roue est arrêtée et l'autre non
-		int distanceAprèsRecalageLigne = 150; //distance de laquelle le robot avance juste après s'être recalé sur la ligne
+		int distanceApresRecalageLigne = 150; //distance de laquelle le robot avance juste après s'être recalé sur la ligne
 		int delaiMiniRecalage = 30; //delai minimum entre le passage des 2 roues sur la ligne pour que le robot se recale
 		
 		
@@ -528,11 +528,11 @@ public class ChangeSquare extends DifferentialPilot {
 		/*Recalage dynamique sur la ligne blanche (seule une des 2 roues s'arrête, l'autre continue)*/
 		
 		if (delai > delaiMiniRecalage) { 
-			têta = (int) (Math.atan(0.2 * delai * 0.001 / (trackWidth*0.001))* 180 / Math.PI); // en degrés
+			theta = (int) (Math.atan(0.2 * delai * 0.001 / (trackWidth*0.001))* 180 / Math.PI); // en degrés
 			int sp = motorD.getSpeed();
 			angularSpeed = (int) ((2 * Math.PI * 0.5 * wheelDiameter * (sp /360) / (2 * Math.PI * trackWidth)) * 360); // en degrés
 			prems.setSpeed(0); //attention ne pas utiliser prems.stop() car la latence est trop longue
-			Delay.msDelay(têta*1000/angularSpeed); //attend un certain temps avant de redémarrer le 2e moteur
+			Delay.msDelay(theta*1000/angularSpeed); //attend un certain temps avant de redémarrer le 2e moteur
 			motorG.setSpeed(420);
 			motorD.setSpeed(420);
 		}
@@ -540,7 +540,7 @@ public class ChangeSquare extends DifferentialPilot {
 		
 		/*Le robot mesure sa distance aux murs pendant qu'il avance*/
 		
-		travel(-distanceAprèsRecalageLigne, true);
+		travel(-distanceApresRecalageLigne, true);
 		
 		this.tete.rotateTo(-90); // regarde à gauche
 		cote = "g";
