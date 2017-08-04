@@ -17,9 +17,10 @@ public class ToolOne {
 		this.valPID = 0;
 		this.somme_erreur = 0;
 		this.variation_erreur = 0;
-		this.kp = 25;
-		this.ki = 0;
-		this.kd = 100;
+		
+		this.kp = 25; //à régler
+		this.ki = 0; //à régler
+		this.kd = 100; //à régler
 	}
 	
 	public Integer getEcartALaValeurNoire(final int LDroiteOuGauche, final int valeurSeuilNoir){

@@ -43,7 +43,7 @@ public class MainLabyrinthe {
 		
 		String[] parcours = {"f","l","l","r","f","r","b","r","r","b","l","f","f","l","r","r","r"};
 		//String[] parcours = {"f","l","r","f","f","r"};
-		pilote.parcoursAvecLigne(parcours);
+		pilote.parcours(parcours);
 				
 		}
 	}	

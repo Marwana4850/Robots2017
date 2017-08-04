@@ -4,6 +4,7 @@ import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import tools.ChangeSquare;
 import tools.ToolOne;
@@ -22,30 +23,49 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		Button.waitForAnyPress();	
 		LCD.clear();
 		
+		
+		/*
+		 * A changer en fonction de la constitution mécanique du robot
+		 */
+		
 		LightSensor lightG = new LightSensor(SensorPort.S4); //capteur lumineux gauche
 		LightSensor lightD = new LightSensor(SensorPort.S3); //capteur lumineux droit
-		Integer LGauche = lightG.getNormalizedLightValue();
-		Integer LDroite = lightD.getNormalizedLightValue();
-		Integer valeurSeuilNoir = 505;
-		
 		NXTRegulatedMotor motorG = Motor.C;
 		NXTRegulatedMotor motorD = Motor.B;
-		Integer VitesseMoteurs = 250;
-		Integer VitesseMoteurDroit = 250;
-		Integer VitesseMoteurGauche = 250;
-		Integer VitesseGauche = 0;
-		Integer VitesseDroite = 0;
+		Double wheelDiameter = 55.5; //diamètre des roues
+		Double trackWidth = (double) 165; //écart entre les roues 
+										  //(attention, à régler assez empiriquement jusqu'à avoir des rotations précises du robot)
 		
+		/*
+		 * Initialisations
+		 */
+		
+		Integer LGauche = lightG.getNormalizedLightValue();
+		Integer LDroite = lightD.getNormalizedLightValue();
 		ToolOne PID1 = new ToolOne();
 		ToolOne PID2 = new ToolOne();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
-		Float k = (float) 0.6;
 		Integer valPID = 0;
-		
-		String ProchaineRoute = "";
-		ChangeSquare pilote = new ChangeSquare(55.5, 100, motorG, motorD);
+		DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
 		boolean intersection = false;
+		Integer VitesseGauche = 0;
+		Integer VitesseDroite = 0;
+		
+		
+		/*
+		 * Valeurs à régler si on le souhaite
+		 */
+		
+		Integer valeurSeuilNoir = 505; //Valeur seuil de différenciation du noir et du blanc
+		Integer VitesseMoteurs = 250; //Vitesse des moteurs quand le robot va tout droit
+		Integer VitesseMoteurDroit = 250; //Vitesse du moteur droit quand le robot tourne vers la droite
+										//La valeur de la vitesse du moteur gauche est alors calculée par le PID1
+		Integer VitesseMoteurGauche = 250; //Vitesse du moteur gauche quand le robot tourne vers la gauche
+										//La valeur de la vitesse du moteur droit est alors calculée par le PID2
+		Float k = (float) 0.6; 
+		String ProchaineRoute = "l"; //direction à prendre à la prochaine intersection
+		
 		
 		
 		while(true){
@@ -123,8 +143,6 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			else if((LGauche < valeurSeuilNoir && LDroite < valeurSeuilNoir) || intersection){
 				intersection = false;
 				LCD.drawString("intersection à 2 branches", 1, 3);
-				ProchaineRoute = "l";
-				//ProchaineRoute = "l"
 				Integer ValeurCapteur = valeurSeuilNoir;
 				
 				if(ProchaineRoute.equals("r")){
@@ -134,7 +152,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightG.getNormalizedLightValue();
-					while(end - start < 1200 /*ValeurCapteur <= valeurSeuilNoir*/){
+					while(end - start < 1200 /*ou : ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightG.getNormalizedLightValue();
 						
 						LGauche = valeurSeuilNoir;
@@ -158,7 +176,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightD.getNormalizedLightValue();
-					while(end - start < 1200 /*ValeurCapteur <= valeurSeuilNoir*/){
+					while(end - start < 1200 /*ou : ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightD.getNormalizedLightValue();
 						
 						LDroite = valeurSeuilNoir;
