@@ -7,7 +7,7 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import tools.ChangeSquare;
-import tools.ToolOne;
+import tools.PID;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -42,8 +42,8 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		
 		Integer LGauche = lightG.getNormalizedLightValue();
 		Integer LDroite = lightD.getNormalizedLightValue();
-		ToolOne PID1 = new ToolOne();
-		ToolOne PID2 = new ToolOne();
+		PID PID1 = new PID();
+		PID PID2 = new PID();
 		Integer EcartALaValeurNoire = 0;
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
 		Integer valPID = 0;
@@ -118,7 +118,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 						intersection = true;
 					}
 				}
-				PID1 = new ToolOne(); //on remet à 0 les valeurs
+				PID1 = new PID(); //on remet à 0 les valeurs
 			}
 			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){ //hors intersection et on voit du noir à gauche
 				LCD.clear();
@@ -145,7 +145,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 						intersection = true;
 					}
 				}
-				PID2 = new ToolOne(); //on remet à 0 les valeurs
+				PID2 = new PID(); //on remet à 0 les valeurs
 			}
 			else if((LGauche < valeurSeuilNoir && LDroite < valeurSeuilNoir) || intersection){ //on a détecté une intersection
 				intersection = false; //remet à 0 le booléen de détection d'intersection
@@ -175,7 +175,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 						
 						end = System.currentTimeMillis();
 					}
-					PID1 = new ToolOne(); //on remet à 0 les valeurs
+					PID1 = new PID(); //on remet à 0 les valeurs
 					LCD.clear();
 						
 				}
@@ -202,7 +202,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 						
 						end = System.currentTimeMillis();
 					}
-					PID2 = new ToolOne(); //on remet à 0 les valeurs
+					PID2 = new PID(); //on remet à 0 les valeurs
 					LCD.clear();
 					
 				}

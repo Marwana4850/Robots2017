@@ -1,6 +1,6 @@
 package tools;
 
-public class ToolOne {
+public class PID {
 	
 	
 	/*
@@ -21,7 +21,7 @@ public class ToolOne {
 	 * Constructeur
 	 */
 	
-	public ToolOne() {
+	public PID() {
 		this.EcartALaValeurNoire = 0;
 		this.EcartPrecedent = EcartALaValeurNoire;
 		this.valPID = 0;
