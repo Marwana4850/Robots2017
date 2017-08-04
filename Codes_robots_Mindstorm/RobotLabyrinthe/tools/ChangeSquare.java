@@ -29,6 +29,7 @@ public class ChangeSquare extends DifferentialPilot {
 	//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
 	
 	
+	
 	/*
 	 * Initialisations
 	 *
@@ -78,6 +79,7 @@ public class ChangeSquare extends DifferentialPilot {
 	 * Fonctions  simples de changement de case
 	 * 
 	 */
+	
 	
 	//Pour aller sur la case d'en face
 	
@@ -270,7 +272,9 @@ public class ChangeSquare extends DifferentialPilot {
 
 	
 	
-	
+	/*
+	 * Fonctions qui permettent le déplacement du robot dans le labyrinthe, sans recalage
+	 */
 	
 	public void goSimple(String d){
 		motorG.setSpeed(200);
@@ -316,6 +320,13 @@ public class ChangeSquare extends DifferentialPilot {
 			}
 			
 		}
+	
+	
+	
+	/*
+	 * Fonctions qui permettent le déplacement du robot dans le labyrinthe, avec recalage sur ligne mais sans recalage US
+	 */
+	
 	public void goAvecLigne(String d){
 		motorG.setSpeed(200);
 		motorD.setSpeed(200);
@@ -380,6 +391,7 @@ public class ChangeSquare extends DifferentialPilot {
 			}
 			
 		}
+	
 	
 
 	/*

@@ -29,6 +29,7 @@ public class ChangeSquare extends DifferentialPilot {
 	//attention, (distanceDeRecalage + distanceAprèsRecalageLigne = 240)
 	
 	
+	
 	/*
 	 * Initialisations
 	 *
@@ -78,6 +79,7 @@ public class ChangeSquare extends DifferentialPilot {
 	 * Fonctions  simples de changement de case
 	 * 
 	 */
+	
 	
 	//Pour aller sur la case d'en face
 	

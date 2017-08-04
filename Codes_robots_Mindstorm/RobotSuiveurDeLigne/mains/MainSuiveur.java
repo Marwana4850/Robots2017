@@ -48,7 +48,8 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		Integer EcartARetenir = 0; //deviendra EcartPrecedent
 		Integer valPID = 0;
 		DifferentialPilot pilote = new DifferentialPilot(wheelDiameter, trackWidth, motorG, motorD);
-		boolean intersection = false;
+		//ou : ChangeSquare pilote = new ChangeSquare(wheelDiameter, trackWidth, motorG, motorD);
+		boolean intersection = false; //indique si on a détecté une intersection
 		Integer VitesseGauche = 0;
 		Integer VitesseDroite = 0;
 		
@@ -57,7 +58,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		 * Valeurs à régler si on le souhaite
 		 */
 		
-		Integer valeurSeuilNoir = 505; //Valeur seuil de différenciation du noir et du blanc
+		Integer valeurSeuilNoir = 505; //Valeur seuil de différenciation du noir et du blanc (au-dessus c'est blanc)
 		Integer VitesseMoteurs = 250; //Vitesse des moteurs quand le robot va tout droit
 		Integer VitesseMoteurDroit = 250; //Vitesse du moteur droit quand le robot tourne vers la droite
 										//La valeur de la vitesse du moteur gauche est alors calculée par le PID1
@@ -67,6 +68,10 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 		String ProchaineRoute = "l"; //direction à prendre à la prochaine intersection
 		
 		
+		
+		/*
+		 * Boucle principale : déplacement du robot en suivant la ligne
+		 */
 		
 		while(true){
 			
@@ -79,7 +84,7 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			motorG.forward();
 			motorD.forward();
 			
-			if(LGauche > valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){
+			if(LGauche > valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){ //hors intersection et on ne voit que du blanc
 				LCD.clear();
 				LCD.drawString("Blanc", 1, 3);
 				//aller tout droit
@@ -88,14 +93,15 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 			}
 			
 			
-			else if(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir && !intersection){ //on voit du noir à droite
+			else if(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir && !intersection){ //hors intersection et on voit du noir à droite
 				LCD.clear();
 				LCD.drawString("Noir droite", 1, 3);
 				//tourner à gauche		
+				
 				while(LDroite < valeurSeuilNoir && LGauche > valeurSeuilNoir && !intersection){
+					
 					//PID
 					EcartARetenir = PID1.getEcartALaValeurNoire(LDroite, valeurSeuilNoir);
-					
 					valPID = PID1.valeurPID();
 					PID1.setEcartPrecedent(EcartARetenir);
 					
@@ -108,20 +114,21 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					LGauche = lightG.getNormalizedLightValue();
 					LDroite = lightD.getNormalizedLightValue();
 					
-					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){
+					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){ //détection d'intersection
 						intersection = true;
 					}
 				}
 				PID1 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){ //on voit du noir à gauche
+			else if(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){ //hors intersection et on voit du noir à gauche
 				LCD.clear();
 				LCD.drawString("Noir gauche", 1, 3);
 				//tourner à droite
+				
 				while(LGauche < valeurSeuilNoir && LDroite > valeurSeuilNoir && !intersection){
+					
 					//PID
 					EcartARetenir = PID2.getEcartALaValeurNoire(LGauche, valeurSeuilNoir);
-					
 					valPID = PID2.valeurPID();
 					PID2.setEcartPrecedent(EcartARetenir);
 					
@@ -134,28 +141,30 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 					LGauche = lightG.getNormalizedLightValue();
 					LDroite = lightD.getNormalizedLightValue();
 					
-					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){
+					if(LGauche < valeurSeuilNoir && LGauche < valeurSeuilNoir){ //détection d'intersection
 						intersection = true;
 					}
 				}
 				PID2 = new ToolOne(); //on remet à 0 les valeurs
 			}
-			else if((LGauche < valeurSeuilNoir && LDroite < valeurSeuilNoir) || intersection){
-				intersection = false;
+			else if((LGauche < valeurSeuilNoir && LDroite < valeurSeuilNoir) || intersection){ //on a détecté une intersection
+				intersection = false; //remet à 0 le booléen de détection d'intersection
 				LCD.drawString("intersection à 2 branches", 1, 3);
 				Integer ValeurCapteur = valeurSeuilNoir;
 				
 				if(ProchaineRoute.equals("r")){
-					//pendant 2 sec, ignore le capteur gauche
+					
+					//pendant 1.2 sec (ou : jusqu'à avoir franchi une ligne à gauche), on ignore le capteur gauche
 					LCD.drawString("va à droite", 1, 4);
 					long start = System.currentTimeMillis();
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightG.getNormalizedLightValue();
+					
 					while(end - start < 1200 /*ou : ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightG.getNormalizedLightValue();
 						
-						LGauche = valeurSeuilNoir;
+						LGauche = valeurSeuilNoir; //ignore le capteur gauche
 						EcartARetenir = PID1.getEcartALaValeurNoire(LDroite, valeurSeuilNoir);
 						valPID = PID1.valeurPID();
 						PID1.setEcartPrecedent(EcartARetenir);
@@ -171,15 +180,18 @@ public class MainSuiveur { //Pour suivre une ligne NOIRE sur fond BLANC
 						
 				}
 				else if(ProchaineRoute.equals("l")){
+					
+					//pendant 1.2 sec (ou : jusqu'à avoir franchi une ligne à droite), on ignore le capteur droit
 					LCD.drawString("va à gauche", 1, 4);
 					long start = System.currentTimeMillis();
 					long end = System.currentTimeMillis();
 					
 					ValeurCapteur = lightD.getNormalizedLightValue();
+					
 					while(end - start < 1200 /*ou : ValeurCapteur <= valeurSeuilNoir*/){
 						ValeurCapteur = lightD.getNormalizedLightValue();
 						
-						LDroite = valeurSeuilNoir;
+						LDroite = valeurSeuilNoir; //ignore le capteur droit
 						EcartARetenir = PID2.getEcartALaValeurNoire(LGauche, valeurSeuilNoir);
 						valPID = PID2.valeurPID();
 						PID2.setEcartPrecedent(EcartARetenir);
